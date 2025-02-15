@@ -1,0 +1,21 @@
+name: example
+description: "Example application showcasing the use of trusted_time_android plugin"
+publish_to: 'none'
+version: 0.0.1
+
+environment:
+  sdk: ">=3.7.0"
+  flutter: ">=3.29.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  trusted_time_android:
+    path: ../
+
+dev_dependencies:
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true

@@ -1,0 +1,3 @@
+package com.peteraleksanderbizjak.trusted_time_android
+
+internal class TrustedTimeAndroidPluginTest
