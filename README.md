@@ -2,11 +2,10 @@
 
 A Flutter plugin providing reliable and accurate time keeping for Android apps using Google's TrustedTime API. This plugin offers timestamps that are independent of device settings and synchronized with Google's time servers.
 
-**This is the first version of the plugin, and it only supports `computeCurrentUnixEpochMillis` method. Not ready for production use.**
-
 ## Features
 
 - Reliable timestamps independent of device time settings
+- Detailed error estimates for time measurements
 - Accounts for device clock drift
 - Maintains synchronization with Google's time servers
 - Handles offline scenarios gracefully
@@ -22,10 +21,12 @@ A Flutter plugin providing reliable and accurate time keeping for Android apps u
 
 ```yaml
 dependencies:
-  trusted_time_android: ^0.0.1
+  trusted_time_android: ^0.0.2
 ```
 
 ## Usage
+
+### Basic Timestamp Retrieval
 
 ```dart
 import 'package:trusted_time_android/trusted_time_android.dart';
@@ -42,6 +43,19 @@ if (timestamp != null) {
 }
 ```
 
+### Detailed Time Signal Information
+
+```dart
+// Get detailed time signal with error estimates
+final signal = await trustedTime.getLatestTimeSignal();
+if (signal?.currentInstant != null) {
+  final instant = signal!.currentInstant!;
+  print('Current time: ${instant.instantMillis}');
+  print('Measurement error: ±${instant.estimatedErrorMillis}ms');
+  print('Initial acquisition error: ±${signal.acquisitionEstimatedErrorMillis}ms');
+}
+```
+
 ## Important Notes
 
 1. **First Boot Synchronization**: After device boot, the TrustedTime API requires an initial internet connection to synchronize. Until this happens, timestamps will return null.
@@ -50,19 +64,48 @@ if (timestamp != null) {
 
 3. **Error Handling**: Always check for null returns, which indicate that a trusted timestamp is not available.
 
-4. **Battery & Network Impact**: The API is designed to be efficient, using periodic synchronization rather than constant network requests.
+4. **Error Estimates**: The API provides error estimates for time measurements:
+   - `estimatedErrorMillis`: Current error margin for the timestamp
+   - `acquisitionEstimatedErrorMillis`: Error margin from initial time acquisition
+
+5. **Battery & Network Impact**: The API is designed to be efficient, using periodic synchronization rather than constant network requests.
 
 ## Common Issues
 
-- **Null Timestamps**: If `computeCurrentUnixEpochMillis()` returns null, check:
+- **Null Timestamps**: If methods return null, check:
   - Internet connectivity
   - Google Play Services availability
   - Whether the device has booted recently without network access
 
-- **Accuracy**: While highly accurate, timestamps may have some error margin due to:
-  - Network latency during synchronization
-  - Time elapsed since last sync
-  - Device clock drift
+- **Accuracy Considerations**: 
+  - Error estimates provide bounds for timestamp accuracy
+  - Network latency affects initial synchronization
+  - Time elapsed since last sync impacts accuracy
+  - Device clock drift is automatically compensated
+
+## Error Handling Best Practices
+
+```dart
+final signal = await trustedTime.getLatestTimeSignal();
+if (signal == null) {
+  print('Time signal not available');
+  return;
+}
+
+final instant = signal.currentInstant;
+if (instant == null) {
+  print('Current time information not available');
+  return;
+}
+
+if (instant.estimatedErrorMillis != null && 
+    instant.estimatedErrorMillis! > 1000) {
+  print('Warning: Time measurement has high error margin');
+}
+
+print('Time: ${instant.instantMillis}');
+print('Error margin: ±${instant.estimatedErrorMillis}ms');
+```
 
 ## License
 

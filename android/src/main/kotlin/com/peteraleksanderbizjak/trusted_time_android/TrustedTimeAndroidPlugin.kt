@@ -65,6 +65,13 @@ internal class TrustedTimeAndroidPlugin : FlutterPlugin, MethodCallHandler, Acti
                 result.success(currentUnixEpochMillis)
             }
 
+            METHOD_GET_LATEST_TIME_SIGNAL -> {
+                val serializedLatestTimeSignal = trustedTimeClient?.latestTimeSignal
+                    ?.toSerializable()
+                    ?.toMap()
+                result.success(serializedLatestTimeSignal)
+            }
+
             else -> result.notImplemented()
         }
     }
@@ -74,5 +81,6 @@ internal class TrustedTimeAndroidPlugin : FlutterPlugin, MethodCallHandler, Acti
 
         private const val CHANNEL_NAME = "trusted_time_android"
         private const val METHOD_COMPUTE_CURRENT_UNIX_EPOCH_MILLIS = "computeCurrentUnixEpochMillis"
+        private const val METHOD_GET_LATEST_TIME_SIGNAL = "getLatestTimeSignal"
     }
 }

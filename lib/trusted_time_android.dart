@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+import 'package:trusted_time_android/serialized_time_signal.dart';
 
 /// A Flutter plugin that provides access to Google Play Services' TrustedTime API,
 /// offering reliable and accurate time keeping capabilities independent of device settings.
@@ -9,20 +10,29 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 /// - Account for device clock drift
 /// - Maintain synchronization with Google's time servers
 ///
+/// The plugin offers two main methods:
+/// 1. [computeCurrentUnixEpochMillis] - Get current timestamp
+/// 2. [getLatestTimeSignal] - Get detailed time signal information including error estimates
+///
 /// Example usage:
 /// ```dart
 /// final trustedTime = TrustedTimeAndroid.instance();
+///
+/// // Basic timestamp retrieval
 /// final timestamp = await trustedTime.computeCurrentUnixEpochMillis();
-/// if (timestamp != null) {
-///   print('Current trusted timestamp: $timestamp');
-/// } else {
-///   print('Trusted time not available - device may not have synchronized yet');
+///
+/// // Detailed time signal with error estimates
+/// final signal = await trustedTime.getLatestTimeSignal();
+/// if (signal?.currentInstant != null) {
+///   print('Time: ${signal!.currentInstant!.instantMillis}');
+///   print('Error margin: ±${signal.currentInstant!.estimatedErrorMillis}ms');
 /// }
 /// ```
 class TrustedTimeAndroid extends PlatformInterface {
   static const String _methodChannelName = "trusted_time_android";
   static const String _methodComputeCurrentUnixEpochMillis =
       "computeCurrentUnixEpochMillis";
+  static const String _methodGetLatestTimeSignal = "getLatestTimeSignal";
 
   static final Object _token = Object();
   static TrustedTimeAndroid? _instance;
@@ -49,4 +59,29 @@ class TrustedTimeAndroid extends PlatformInterface {
   /// - Accurate within the error bounds provided by the time signal
   Future<int?> computeCurrentUnixEpochMillis() =>
       _channel.invokeMethod<int>(_methodComputeCurrentUnixEpochMillis);
+
+  /// Retrieves the latest time signal from TrustedTime API with detailed information
+  /// about the time measurement, including error estimates.
+  ///
+  /// Returns null if:
+  /// - Device hasn't connected to the internet since last boot
+  /// - Google Play Services is not available
+  /// - Time signal hasn't been received yet
+  ///
+  /// The [SerializableTimeSignal] contains:
+  /// - [acquisitionEstimatedErrorMillis]: Error estimate for the initial time acquisition
+  /// - [currentInstant]: Current time information including:
+  ///   - [instantMillis]: The current timestamp
+  ///   - [estimatedErrorMillis]: Current error estimate for the timestamp
+  Future<SerializableTimeSignal?> getLatestTimeSignal() async {
+    final result = await _channel.invokeMapMethod<String, dynamic>(
+      _methodGetLatestTimeSignal,
+    );
+
+    if (result != null) {
+      return SerializableTimeSignal.fromMap(result);
+    }
+
+    return null;
+  }
 }

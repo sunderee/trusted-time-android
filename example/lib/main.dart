@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trusted_time_android/serialized_time_signal.dart';
 import 'package:trusted_time_android/trusted_time_android.dart';
 
 void main() => runApp(const App());
@@ -12,6 +13,7 @@ final class App extends StatefulWidget {
 
 final class _AppState extends State<App> {
   int? _currentUnixEpochMillis;
+  SerializableTimeSignal? _timeSignal;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +34,18 @@ final class _AppState extends State<App> {
                           (value) =>
                               setState(() => _currentUnixEpochMillis = value),
                         );
+                  },
+                  icon: Icon(Icons.refresh),
+                ),
+              ),
+              ListTile(
+                title: Text(_timeSignal?.toString() ?? '-'),
+                subtitle: Text('Latest time signal'),
+                trailing: IconButton(
+                  onPressed: () {
+                    TrustedTimeAndroid.instance().getLatestTimeSignal().then(
+                      (value) => setState(() => _timeSignal = value),
+                    );
                   },
                   icon: Icon(Icons.refresh),
                 ),
