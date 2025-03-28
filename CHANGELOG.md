@@ -8,3 +8,8 @@
 - Added `SerializableTimeSignal` class.
 - Added `SerializableCurrentInstant` class.
 - Added tests.
+
+## 0.0.3
+
+- Bump Dart and Flutter SDK constraints.
+- Update the repository URL.

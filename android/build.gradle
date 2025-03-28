@@ -2,7 +2,7 @@ group = "com.peteraleksanderbizjak.trusted_time_android"
 version = "1.0-SNAPSHOT"
 
 buildscript {
-    ext.kotlin_version = "1.8.22"
+    ext.kotlin_version = "2.0.21"
     repositories {
         google()
         mavenCentral()
@@ -20,7 +20,7 @@ allprojects {
         mavenCentral()
 
         // Uncomment for development
-        // maven { url 'https://storage.googleapis.com/download.flutter.io' }
+        maven { url 'https://storage.googleapis.com/download.flutter.io' }
     }
 }
 
@@ -52,7 +52,7 @@ android {
 
     dependencies {
         // Uncomment for development
-        // compileOnly("io.flutter:flutter_embedding_debug:1.0.0-1d25906b4cf0076604a67360b21b1e092eb01b19")
+        compileOnly("io.flutter:flutter_embedding_debug:1.0.0-1d25906b4cf0076604a67360b21b1e092eb01b19")
 
         // TrustedTime API
         implementation("com.google.android.gms:play-services-time:16.0.1")
