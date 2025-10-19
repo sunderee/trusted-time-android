@@ -130,7 +130,7 @@ void main() {
     });
 
     test('equals and hashCode work correctly', () {
-      final signal1 = SerializableTimeSignal(
+      const signal1 = SerializableTimeSignal(
         acquisitionEstimatedErrorMillis: 100,
         currentInstant: SerializableCurrentInstant(
           estimatedErrorMillis: 150,
@@ -138,7 +138,7 @@ void main() {
         ),
       );
 
-      final signal2 = SerializableTimeSignal(
+      const signal2 = SerializableTimeSignal(
         acquisitionEstimatedErrorMillis: 100,
         currentInstant: SerializableCurrentInstant(
           estimatedErrorMillis: 150,
@@ -169,12 +169,12 @@ void main() {
     });
 
     test('equals and hashCode work correctly', () {
-      final instant1 = SerializableCurrentInstant(
+      const instant1 = SerializableCurrentInstant(
         estimatedErrorMillis: 150,
         instantMillis: 1234567890123,
       );
 
-      final instant2 = SerializableCurrentInstant(
+      const instant2 = SerializableCurrentInstant(
         estimatedErrorMillis: 150,
         instantMillis: 1234567890123,
       );

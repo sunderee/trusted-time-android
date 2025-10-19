@@ -13,3 +13,9 @@
 
 - Bump Dart and Flutter SDK constraints.
 - Update the repository URL.
+
+## 0.0.4
+
+- Bump Dart and Flutter SDK constraints.
+- Update dependency versions.
+- Codebase updates according to new `analysis_options.yaml` file. 

@@ -43,7 +43,7 @@ class TrustedTimeAndroid extends PlatformInterface {
   final MethodChannel _channel;
 
   TrustedTimeAndroid._()
-    : _channel = MethodChannel(_methodChannelName),
+    : _channel = const MethodChannel(_methodChannelName),
       super(token: _token);
 
   /// Retrieves the current time as milliseconds since Unix epoch from TrustedTime.
