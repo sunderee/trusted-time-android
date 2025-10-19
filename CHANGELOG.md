@@ -19,3 +19,7 @@
 - Bump Dart and Flutter SDK constraints.
 - Update dependency versions.
 - Codebase updates according to new `analysis_options.yaml` file. 
+
+## 0.0.5
+
+- Code formatting fixes.

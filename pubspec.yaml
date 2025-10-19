@@ -1,6 +1,6 @@
 name: trusted_time_android
 description: "A Flutter plugin providing reliable and accurate time keeping for Android apps using Google's TrustedTime API."
-version: 0.0.4
+version: 0.0.5
 repository: https://github.com/sunderee/trusted-time-android
 
 topics:

@@ -41,12 +41,11 @@ final class SerializableTimeSignal {
     return SerializableTimeSignal(
       acquisitionEstimatedErrorMillis:
           map['acquisitionEstimatedErrorMillis'] as int,
-      currentInstant:
-          map['currentInstant'] != null
-              ? SerializableCurrentInstant.fromMap(
-                map['currentInstant'] as Map<Object?, Object?>,
-              )
-              : null,
+      currentInstant: map['currentInstant'] != null
+          ? SerializableCurrentInstant.fromMap(
+              map['currentInstant'] as Map<Object?, Object?>,
+            )
+          : null,
     );
   }
 
